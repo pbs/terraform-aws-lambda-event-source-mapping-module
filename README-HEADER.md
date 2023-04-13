@@ -16,28 +16,35 @@ More information can be found on these install methods and more in [the document
 
 ## Usage
 
-<!-- TODO -->
-This should be a basic description of what this module does.
-Fill this out before completing usage of this template.
-<!-- TODO -->
+Creates a Lambda event source mapping.
 
 Integrate this module like so:
 
 ```hcl
-module "lambda-event-source-mapping" {
+module "lambda_event_source_mapping" {
   source = "github.com/pbs/terraform-aws-lambda-event-source-mapping-module?ref=x.y.z"
 
-  <!-- TODO -->
-  Show some examples of valid values for required parameters.
-  <!-- TODO -->
-
-  # Tagging Parameters
-  organization = var.organization
-  environment  = var.environment
-  product      = var.product
-  repo         = var.repo
+  function_name    = module.lambda.arn
+  event_source_arn = module.queue.arn
 
   # Optional Parameters
+}
+```
+
+For example, this would be how to use this module to create a Lambda event source mapping for a Lambda function that is triggered by an SQS queue:
+
+```hcl
+module "lambda_event_source_mapping" {
+  source = "../.."
+
+  function_name    = module.lambda.arn
+  event_source_arn = module.queue.arn
+
+  batch_size = 1
+
+  scaling_config = {
+    maximum_concurrency = 10
+  }
 }
 ```
 
