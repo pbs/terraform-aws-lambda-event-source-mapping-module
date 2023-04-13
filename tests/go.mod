@@ -1,4 +1,4 @@
-module github.com/pbs/terraform-aws-MOD_NAME
+module github.com/pbs/terraform-aws-lambda-event-source-mapping-module
 
 go 1.20
 

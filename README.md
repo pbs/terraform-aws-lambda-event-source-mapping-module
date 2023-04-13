@@ -1,24 +1,103 @@
-# TF Module Template
+# PBS TF lambda event source mapping module
 
-Version: `0.0.10`
+## Installation
 
-This is the standard template for Terraform modules. This contains some useful scaffolding to create modules that are:
+### Using the Repo Source
 
-1. Well documented
-2. Tested
-3. Shareable
+Use this URL for the source of the module. See the usage examples below for more details.
 
-Repos created off of this template will follow the naming convention `terraform-aws-MOD_NAME-module`, replacing MOD_NAME with the name of your module.
+```hcl
+github.com/pbs/terraform-aws-lambda-event-source-mapping-module?ref=x.y.z
+```
 
-## TODO
+### Alternative Installation Methods
 
-After creating a repo from this template, your responsibilities are as follows:
+More information can be found on these install methods and more in [the documentation here](./docs/general/install).
 
-- [ ] Run the [wizard.sh](/scripts/wizard.sh) script (`./scripts/wizard.sh`) to populate the boilerplate placeholders with their appropriate values. This includes the proper name of the module and a standardized slug. These values are automatically populated from the name of the repository, but can be adjusted at your discretion.
-- [ ] Update [main.tf](/main.tf), [outputs.tf](/outputs.tf), [required.tf](/required.tf) and [optional.tf](/optional.tf) with the configuration for your module (delete files you don't need).
-- [ ] Double check that the [terraform.tf](/terraform.tf) and [.tool-versions](/.tool-versions) files have the appropriate versions for resources you are going to use. For major updates, consider updating this template!
-- [ ] Create some [examples](/examples) of your module being used. Remember that the examples there will be used for tests that run in real AWS accounts!
-- [ ] Create some [tests](/tests) to validate the proper configuration of your module. See instructions [here](/docs/general/dev).
-- [ ] Update [README-HEADER.md](/README-HEADER.md) based on the properties of your module. This file will replace the README.md on commit if you follow the instructions [here](/docs/general/dev).
-- [ ] Add the git hooks listed under ## Hooks [here](/docs/general/dev). These scripts run as part of the CI, but your development experience will be smoother if you have them running locally as well.
-- [ ] Add this template as a remote (`git remote add template git@github.com:pbs/terraform-aws-template-v2.git`). This can be used to allow you to merge back any changes you like from the template into your module.
+## Usage
+
+Creates a Lambda event source mapping.
+
+Integrate this module like so:
+
+```hcl
+module "lambda_event_source_mapping" {
+  source = "github.com/pbs/terraform-aws-lambda-event-source-mapping-module?ref=x.y.z"
+
+  function_name    = module.lambda.arn
+  event_source_arn = module.queue.arn
+
+  # Optional Parameters
+}
+```
+
+For example, this would be how to use this module to create a Lambda event source mapping for a Lambda function that is triggered by an SQS queue:
+
+```hcl
+module "lambda_event_source_mapping" {
+  source = "../.."
+
+  function_name    = module.lambda.arn
+  event_source_arn = module.queue.arn
+
+  batch_size = 1
+
+  scaling_config = {
+    maximum_concurrency = 10
+  }
+}
+```
+
+## Adding This Version of the Module
+
+If this repo is added as a subtree, then the version of the module should be close to the version shown here:
+
+`x.y.z`
+
+Note, however that subtrees can be altered as desired within repositories.
+
+Further documentation on usage can be found [here](./docs).
+
+Below is automatically generated documentation on this Terraform module using [terraform-docs][terraform-docs]
+
+---
+
+[terraform-docs]: https://github.com/terraform-docs/terraform-docs
+
+## Requirements
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.2 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.5.0 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.62.0 |
+
+## Modules
+
+No modules.
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [aws_lambda_event_source_mapping.mapping](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_event_source_mapping) | resource |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_function_name"></a> [function\_name](#input\_function\_name) | The name or the ARN of the Lambda function that will be subscribing to events. | `string` | n/a | yes |
+| <a name="input_batch_size"></a> [batch\_size](#input\_batch\_size) | The largest number of records that Lambda will retrieve from your event source at the time of invocation. Defaults to 100 for DynamoDB, Kinesis, MQ and MSK, 10 for SQS. | `number` | `null` | no |
+| <a name="input_event_source_arn"></a> [event\_source\_arn](#input\_event\_source\_arn) | The event source ARN - this is required for Kinesis stream, DynamoDB stream, SQS queue, MQ broker or MSK cluster. It is incompatible with a Self Managed Kafka source. | `string` | `null` | no |
+| <a name="input_scaling_config"></a> [scaling\_config](#input\_scaling\_config) | Scaling configuration of the event source. Only available for SQS queues. Detailed below. | <pre>object({<br>    maximum_concurrency = optional(number)<br>  })</pre> | `null` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_uuid"></a> [uuid](#output\_uuid) | The UUID of the created event source mapping |
