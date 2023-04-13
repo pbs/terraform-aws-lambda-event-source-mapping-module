@@ -1,9 +1,4 @@
-output "hello_world" {
-  description = "Hello world output"
-  value       = "Hello, World!"
-}
-
-output "tags" {
-  description = "The tags"
-  value       = local.tags
+output "uuid" {
+  description = "The UUID of the created event source mapping"
+  value       = aws_lambda_event_source_mapping.mapping.uuid
 }
