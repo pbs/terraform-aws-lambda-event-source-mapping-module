@@ -7,7 +7,7 @@
 Use this URL for the source of the module. See the usage examples below for more details.
 
 ```hcl
-github.com/pbs/terraform-aws-lambda-event-source-mapping-module?ref=0.0.1
+github.com/pbs/terraform-aws-lambda-event-source-mapping-module?ref=x.y.z
 ```
 
 ### Alternative Installation Methods
@@ -22,7 +22,7 @@ Integrate this module like so:
 
 ```hcl
 module "lambda_event_source_mapping" {
-  source = "github.com/pbs/terraform-aws-lambda-event-source-mapping-module?ref=0.0.1"
+  source = "github.com/pbs/terraform-aws-lambda-event-source-mapping-module?ref=x.y.z"
 
   function_name    = module.lambda.arn
   event_source_arn = module.queue.arn
@@ -52,7 +52,7 @@ module "lambda_event_source_mapping" {
 
 If this repo is added as a subtree, then the version of the module should be close to the version shown here:
 
-`0.0.1`
+`x.y.z`
 
 Note, however that subtrees can be altered as desired within repositories.
 
@@ -94,6 +94,7 @@ No modules.
 | <a name="input_function_name"></a> [function\_name](#input\_function\_name) | The name or the ARN of the Lambda function that will be subscribing to events. | `string` | n/a | yes |
 | <a name="input_batch_size"></a> [batch\_size](#input\_batch\_size) | The largest number of records that Lambda will retrieve from your event source at the time of invocation. Defaults to 100 for DynamoDB, Kinesis, MQ and MSK, 10 for SQS. | `number` | `null` | no |
 | <a name="input_event_source_arn"></a> [event\_source\_arn](#input\_event\_source\_arn) | The event source ARN - this is required for Kinesis stream, DynamoDB stream, SQS queue, MQ broker or MSK cluster. It is incompatible with a Self Managed Kafka source. | `string` | `null` | no |
+| <a name="input_function_response_types"></a> [function\_response\_types](#input\_function\_response\_types) | A list of current response type enums applied to the event source mapping for AWS Lambda checkpointing. Only available for SQS and stream sources (DynamoDB and Kinesis). Valid values: ReportBatchItemFailures. | `list(string)` | `null` | no |
 | <a name="input_scaling_config"></a> [scaling\_config](#input\_scaling\_config) | Scaling configuration of the event source. Only available for SQS queues. Detailed below. | <pre>object({<br>    maximum_concurrency = optional(number)<br>  })</pre> | `null` | no |
 
 ## Outputs

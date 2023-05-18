@@ -17,3 +17,9 @@ variable "scaling_config" {
     maximum_concurrency = optional(number)
   })
 }
+
+variable "function_response_types" {
+  description = "A list of current response type enums applied to the event source mapping for AWS Lambda checkpointing. Only available for SQS and stream sources (DynamoDB and Kinesis). Valid values: ReportBatchItemFailures."
+  default     = null
+  type        = list(string)
+}
