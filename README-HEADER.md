@@ -1,4 +1,4 @@
-# PBS TF lambda event source mapping module
+# PBS TF Lambda Event Source Mapping Module
 
 ## Installation
 
