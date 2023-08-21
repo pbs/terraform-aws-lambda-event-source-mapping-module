@@ -7,7 +7,7 @@
 Use this URL for the source of the module. See the usage examples below for more details.
 
 ```hcl
-github.com/pbs/terraform-aws-lambda-event-source-mapping-module?ref=x.y.z
+github.com/pbs/terraform-aws-lambda-event-source-mapping-module?ref=0.1.2
 ```
 
 ### Alternative Installation Methods
@@ -22,7 +22,7 @@ Integrate this module like so:
 
 ```hcl
 module "lambda_event_source_mapping" {
-  source = "github.com/pbs/terraform-aws-lambda-event-source-mapping-module?ref=x.y.z"
+  source = "github.com/pbs/terraform-aws-lambda-event-source-mapping-module?ref=0.1.2"
 
   function_name    = module.lambda.arn
   event_source_arn = module.queue.arn
@@ -52,7 +52,7 @@ module "lambda_event_source_mapping" {
 
 If this repo is added as a subtree, then the version of the module should be close to the version shown here:
 
-`x.y.z`
+`0.1.2`
 
 Note, however that subtrees can be altered as desired within repositories.
 
